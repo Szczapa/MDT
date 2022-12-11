@@ -1,0 +1,29 @@
+@base_url = http://localhost:3000
+{{base_url}}/workforce
+###
+POST {{base_url}}/workforce
+Content-Type: application/json
+{
+    "first_name": "John",
+    "last_name": "Doe",
+    "username": "robrob",
+    "password": "123456",
+}
+###
+PUT {{base_url}}/workforce
+Content-Type: application/json
+
+{
+    "name": "bigmac",
+    "price": 15
+}
+###
+PUT {{base_url}}/workforce
+Content-Type: application/json
+
+{
+    "name": "whooper",
+    "price": 14
+}
+###
+# DELETE {{base_url}}/dish/kebab

@@ -1,24 +1,6 @@
-# back-end
+# explications
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- Babel: traspile du JS. Permet d'écrire du JS moderne tout en supportant tous les naviateurs
+- Transpiler: Passer d'un langage vers une autre langage qui a le même niveau d'abstraction
+- eslint: l'outil linter pour JS et TS
+  - linter: détecte les mauvaises pratiques de programmation (on appelle ça aussi du code smell)

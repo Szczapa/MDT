@@ -1,16 +1,18 @@
 <template>
-  <div class="vertical-nav bg-white" id="sidebar">
+  <div class="vertical-nav sidebar_background" id="sidebar">
     <div class="py-4 px-3 mb-4 bg-light">
       <div class="media d-flex align-items-center">
-        <img
-          src="https://bootstrapious.com/i/snippets/sn-v-nav/avatar.png"
-          alt="..."
-          width="65"
-          class="mr-3 rounded-circle img-thumbnail shadow-sm"
-        />
-        <div class="media-body">
-          <h4 class="m-0">Jason Doe</h4>
-          <p class="font-weight-light text-muted mb-0">Web developer</p>
+        <router-link to="/account" class="nav-link text-dark font-italic">
+          <img
+            src="./assets/ppBishop.jpg"
+            alt="User img"
+            width="65"
+            class="mr-3 rounded-circle img-thumbnail shadow-sm"
+          />
+        </router-link>
+        <div class="media-body media_padding">
+          <h4 class="m-0">Johnson Bishop</h4>
+          <p class="font-weight-light text-muted mb-0">Capitaine</p>
         </div>
       </div>
     </div>
@@ -19,86 +21,28 @@
       Main Menu
     </p>
 
-    <ul class="nav flex-column bg-white mb-0">
+    <ul class="nav flex-column mb-0">
       <li class="nav-item">
         <router-link to="/" class="nav-link text-dark font-italic">
-          <i class="fa fa-area-chart mr-3 text-primary fa-fw"></i>Go to
-          Home</router-link
-        >
-      </li>
-      <li class="nav-item">
-        <router-link to="/about" class="nav-link text-dark font-italic">
-          <i class="fa fa-area-chart mr-3 text-primary fa-fw"></i>About view
+          <i class="fa fa-area-chart mr-3 text-primary fa-fw"></i>
+          <span class="nav_txt">Central Service</span>
         </router-link>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link text-dark font-italic">
-          <i class="fa fa-pie-chart mr-3 text-primary fa-fw"></i>
-          Pie charts
-        </a>
+        <router-link to="/report" class="nav-link text-dark font-italic">
+          <i class="fa fa-area-chart mr-3 text-primary fa-fw"></i>
+          <span class="nav_txt">Rapport</span>
+        </router-link>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link text-dark font-italic">
-          <i class="fa fa-line-chart mr-3 text-primary fa-fw"></i>
-          Line charts
-        </a>
+        <router-link to="/workforce" class="nav-link text-dark font-italic">
+          <i class="fa fa-area-chart mr-3 text-primary fa-fw"></i>
+          <span class="nav_txt">Gestion des équipes</span>
+        </router-link>
       </li>
     </ul>
   </div>
   <router-view />
 </template>
 
-<style>
-/*
-*
-* ==========================================
-* CUSTOM UTIL CLASSES
-* ==========================================
-*
-*/
-
-.vertical-nav {
-  min-width: 17rem;
-  width: 17rem;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.4s;
-}
-
-.page-content {
-  width: calc(100% - 17rem);
-  margin-left: 17rem;
-  transition: all 0.4s;
-}
-
-/* for toggle behavior */
-
-#sidebar.active {
-  margin-left: -17rem;
-}
-
-#content.active {
-  width: 100%;
-  margin: 0;
-}
-
-@media (max-width: 768px) {
-  #sidebar {
-    margin-left: -17rem;
-  }
-  #sidebar.active {
-    margin-left: 0;
-  }
-  #content {
-    width: 100%;
-    margin: 0;
-  }
-  #content.active {
-    margin-left: 17rem;
-    width: calc(100% - 17rem);
-  }
-}
-</style>
+<script></script>
