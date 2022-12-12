@@ -2,6 +2,10 @@
   background: rgb(238, 238, 238);
 }
 
+.delete:hover {
+  cursor: pointer;
+}
+
 .media_padding {
   margin-left: 6px;
 }

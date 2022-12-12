@@ -11,7 +11,7 @@
     <div class="row">
       <div class="col-md-7 col-lg-12">
         <h4 class="mb-3">Informations Agent</h4>
-        <form class="needs-validation" novalidate="">
+        <div class="needs-validation" novalidate="true" id="register">
           <div class="row g-3">
             <div class="col-sm-6">
               <label for="firstName" class="form-label">Prénom</label>
@@ -20,8 +20,8 @@
                 class="form-control"
                 id="firstName"
                 placeholder="John"
-                value=""
-                required=""
+                v-model="userToAdd.firstName"
+                required="true"
               />
               <div class="invalid-feedback">Prenom invalide.</div>
             </div>
@@ -33,22 +33,23 @@
                 class="form-control"
                 id="lastName"
                 placeholder="Doe"
-                value=""
-                required=""
+                v-model="userToAdd.lastName"
+                required="true"
               />
               <div class="invalid-feedback">Nom invalide.</div>
             </div>
 
             <div class="col-6">
-              <label for="username" class="form-label">Username</label>
+              <label for="userName" class="form-label">UserName</label>
               <div class="input-group has-validation">
                 <span class="input-group-text">@</span>
                 <input
                   type="text"
                   class="form-control"
-                  id="username"
-                  placeholder="J.Doe"
-                  required=""
+                  id="userName"
+                  placeholder="JDoe"
+                  required="true"
+                  v-model="userToAdd.userName"
                 />
                 <div class="invalid-feedback">Prénom Requis.</div>
               </div>
@@ -62,26 +63,32 @@
                   class="form-control"
                   id="password"
                   placeholder="**JDoe**"
-                  required=""
+                  required="true"
+                  v-model="userToAdd.password"
                 />
-                <div class="invalid-feedback">Prénom Requis.</div>
+                <div class="invalid-feedback">Mot de passe Requis.</div>
               </div>
             </div>
             <div class="invalid-feedback">Entrer son nom d'utilisateur</div>
 
             <div class="col-md-12">
               <label for="grade" class="form-label">Grades</label>
-              <select class="form-select" id="grade" required="">
-                <option value="">Selection Grade</option>
-                <option value="">Cadet</option>
-                <option value="">Officier 1</option>
-                <option value="">Officier 2</option>
-                <option value="">Officier 3</option>
-                <option value="">Sergent</option>
-                <option value="">Sergent-chef</option>
-                <option value="">Lieutenant</option>
-                <option value="">Capitaine</option>
-                <option value="">Commandant/(e)</option>
+              <select
+                class="form-select"
+                id="grade"
+                required="true"
+                v-model="userToAdd.grade"
+              >
+                <option>Selection Grade</option>
+                <option>Cadet</option>
+                <option>Officier 1</option>
+                <option>Officier 2</option>
+                <option>Officier 3</option>
+                <option>Sergent</option>
+                <option>Sergent-chef</option>
+                <option>Lieutenant</option>
+                <option>Capitaine</option>
+                <option>Commandant/(e)</option>
               </select>
               <div class="invalid-feedback">
                 Selectionner le grade de l'officier
@@ -89,10 +96,11 @@
             </div>
           </div>
           <hr class="my-4" />
-          <button class="w-100 btn btn-primary btn-lg" type="submit">
+          <button class="w-100 btn btn-primary btn-lg" v-on:click="postUser">
             Valider l'inscription
           </button>
-        </form>
+        </div>
+        <div>{{ userToAdd }}</div>
       </div>
     </div>
   </main>
@@ -101,15 +109,61 @@
 export default {
   name: "RegisterForm",
   props: {},
+  data() {
+    return {
+      userToAdd: {
+        firstName: "",
+        lastName: "",
+        userName: "",
+        grade: "",
+        password: "",
+      },
+    };
+  },
+  methods: {
+    async postUser() {
+      console.log(this.userToAdd);
+      if (
+        this.userToAdd.firstName === "" ||
+        this.userToAdd.lastName === "" ||
+        this.userToAdd.userName === "" ||
+        this.userToAdd.grade === "" ||
+        this.userToAdd.password === ""
+      ) {
+        alert(
+          "L'inscription est incomplète. Veuillez remplir tous les champs."
+        );
+        return;
+      }
+
+      // si firstname contient des chiffres et caractères spéciaux alors alert
+      if (
+        !this.userToAdd.firstName.match(
+          /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/
+        ) ||
+        !this.userToAdd.lastName.match(
+          /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/
+        ) ||
+        !this.userToAdd.userName.match(
+          /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/
+        )
+      ) {
+        alert(
+          "Le prénom / nom de famille et Username ne doivent pas contenir de chiffres ou de caractères"
+        );
+        return;
+      }
+
+      await fetch("/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(this.userToAdd),
+      });
+      console.log(JSON.stringify(this.userToAdd));
+      // this.$router.push("/login");
+    },
+  },
 };
 </script>
-
-<!-- var rand = function() {
-    return Math.random().toString(36).substr(2); // remove `0.`
-};
-
-var token = function() {
-    return rand() + rand(); // to make it longer
-};
-
-token(); -->

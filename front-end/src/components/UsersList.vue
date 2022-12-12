@@ -4,23 +4,23 @@
       <tr>
         <th scope="col">Prénom</th>
         <th scope="col">Nom</th>
-        <th scope="col">Surnom</th>
+        <th scope="col">Pseudo</th>
         <th scope="col">grade</th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="worker in workforce" :key="worker.firstname">
+      <tr v-for="worker in workforce" :key="worker.id">
         <td>{{ worker.firstname }}</td>
-        <td>@{{ worker.name }}</td>
+        <td>{{ worker.lastname }}</td>
         <td>{{ worker.username }}</td>
-        <td>@{{ worker.grade }}</td>
-        <td>
+        <td>{{ worker.grade }}</td>
+        <td @click="deleteWorker(worker.id)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
             height="20"
             fill="currentColor"
-            class="bi bi-person-dash"
+            class="bi bi-person-dash delete"
             viewBox="0 0 16 16"
           >
             <path
@@ -49,5 +49,13 @@ export default {
     this.workforce = await response.json();
   },
   props: {},
+  methods: {
+    deleteWorker(id) {
+      fetch(`/workforce/${id}`, {
+        method: "DELETE",
+      });
+      this.workforce = this.workforce.filter((worker) => worker.id !== id);
+    },
+  },
 };
 </script>
