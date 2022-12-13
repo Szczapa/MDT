@@ -2,7 +2,8 @@
   background: rgb(238, 238, 238);
 }
 
-.delete:hover {
+.delete:hover,
+.modify:hover {
   cursor: pointer;
 }
 
@@ -69,6 +70,17 @@
   margin-left: -17rem;
 }
 
+#sidebar .isnotCollapse {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  display: block !important;
+}
+
+#content .ContisCollapse {
+  display: none;
+}
+
 #content.active {
   width: 100%;
   margin: 0;
@@ -89,4 +101,10 @@
     margin-left: 17rem;
     width: calc(100% - 17rem);
   }
+
+  #content .ContisCollapse {
+    display: block;
+  }
 }
+
+/* MODAL*/

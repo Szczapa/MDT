@@ -1,9 +1,12 @@
 <template>
   <div class="page-content p-5 bg-light vh-100" id="content">
+    <button class="btn ContisnotCollapse">
+      <i class="fa fa-bars"></i>
+    </button>
     <div class="py-4">
       <header class="pb-3 mb-4 border-bottom">
         <a
-          href="/"
+          href="/report"
           class="d-flex align-items-center text-dark text-decoration-none"
         >
           <svg
@@ -24,7 +27,7 @@
           <span class="fs-4 ms-2"> <strong>Systeme de Rapport</strong></span>
         </a>
       </header>
-      <ReportForm />
+      <ReportList />
       <footer class="pt-3 mt-4 text-muted border-top">
         © MDT-Systeme 2022
       </footer>
@@ -32,13 +35,11 @@
   </div>
 </template>
 <script>
-// @ is an alias to /src
-import ReportForm from "@/components/ReportSystem.vue";
-
+import ReportList from "@/components/ReportList.vue";
 export default {
   name: "ReportView",
   components: {
-    ReportForm,
+    ReportList,
   },
 };
 </script>

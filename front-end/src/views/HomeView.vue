@@ -1,5 +1,8 @@
 <template>
   <div class="page-content p-5 bg-light vh-100" id="content">
+    <button class="btn ContisCollapse">
+      <i class="fa fa-bars"></i>
+    </button>
     <div class="py-4">
       <header class="pb-3 mb-4 border-bottom">
         <a
@@ -26,53 +29,142 @@
       </header>
 
       <div class="p-5 mb-4 bg-light rounded-3">
-        <div class="container-fluid py-5">
-          <h1 class="display-5 fw-bold">Custom jumbotron</h1>
+        <div class="container-fluid py-2">
+          <h1 class="display-5 fw-bold">Annonce</h1>
           <p class="col-md-8 fs-4">
-            Using a series of utilities, you can create this jumbotron, just
-            like the one in previous versions of Bootstrap. Check out the
-            examples below for how you can remix and restyle it to your liking.
+            Bienvenue dans le prototype de MDT du service de police du serveur
+            LegacyRP! <br />
+            Ce MDT est encore en développement, il est donc possible que vous
+            rencontriez des bugs. Voici les fonctionnalité possible Actuelle et
+            Futur :
           </p>
-          <button class="btn btn-primary btn-lg" type="button">
-            Example button
-          </button>
+          <ul>
+            <strong>Disponible :</strong>
+            <li>
+              Ajoute / suppression de nouveaux équipiés pour les grades
+              Capitaine et Supérieur
+            </li>
+            <li>Sécurisation des droit par token</li>
+            <li>Affichage des Rapport</li>
+            <li>Création de Rapport</li>
+            <br />
+            <strong>Futur :</strong>
+            <li>Système de classement des Affaires par statut</li>
+            <li>Livre des peines</li>
+          </ul>
         </div>
       </div>
-
       <div class="row align-items-md-stretch">
         <div class="col-md-6">
-          <div class="h-100 p-5 text-white bg-dark rounded-3">
-            <h2>Change the background</h2>
-            <p>
-              Swap the background-color utility and add a `.text-*` color
-              utility to mix up the jumbotron look. Then, mix and match with
-              additional component themes and more.
-            </p>
-            <button class="btn btn-outline-light" type="button">
-              Example button
-            </button>
+          <div class="pos">
+            <div
+              class="h-100 p-3 text-white bg-dark rounded-3 position-relative"
+            >
+              <div class="panel-body table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>firstName</th>
+                      <th>lastName</th>
+                      <th>username</th>
+                      <th>grade</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="worker in workforce" :key="worker.id">
+                      <td>{{ worker.firstname }}</td>
+                      <td>{{ worker.lastname }}</td>
+                      <td>{{ worker.username }}</td>
+                      <td>{{ worker.grade }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="btn_gestion">
+                <router-link
+                  to="/workforce"
+                  class="nav-link text-dark font-italic"
+                >
+                  <span class="btn btn-outline-light">Voir</span>
+                </router-link>
+              </div>
+            </div>
           </div>
         </div>
         <div class="col-md-6">
-          <div class="h-100 p-5 bg-light border rounded-3">
-            <h2>Add borders</h2>
-            <p>
-              Or, keep it light and add a border for some added definition to
-              the boundaries of your content. Be sure to look under the hood at
-              the source HTML here as we've adjusted the alignment and sizing of
-              both column's content for equal-height.
-            </p>
-            <button class="btn btn-outline-secondary" type="button">
-              Example button
-            </button>
+          <div class="h-100 p-2 bg-light border rounded-3 listResponsive">
+            <div class="row h-100">
+              <div
+                class="col-4 mt-1"
+                v-for="report in reports"
+                :key="report.id"
+              >
+                <div class="feature col border">
+                  <div class="p-3">
+                    <div class="feature-icon">
+                      <i class="fa fa-file" aria-hidden="true"></i>
+                    </div>
+                    <h3>{{ report.title }}</h3>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-
       <footer class="pt-3 mt-4 text-muted border-top">
         © MDT-Systeme 2022
       </footer>
     </div>
   </div>
 </template>
-<script></script>
+<script>
+export default {
+  name: "WorkforceList",
+  data() {
+    return {
+      workforce: [],
+      reports: [],
+    };
+  },
+  async created() {
+    const response = await fetch("/workforce");
+    this.workforce = await response.json();
+    const response2 = await fetch("/reports");
+    this.reports = await response2.json();
+  },
+  props: {},
+};
+</script>
+
+<style>
+.th {
+  text-align: center;
+}
+
+td {
+  font-weight: 600;
+  color: rgb(42, 42, 42);
+}
+.table-bordered > :not(caption) > * > * {
+  border: none;
+}
+.table-responsive {
+  max-height: 235px;
+  background-color: white;
+  height: 235px;
+}
+.listResponsive {
+  max-height: 300px !important;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.btn_gestion {
+  position: absolute;
+  bottom: -2px;
+  left: 0px;
+}
+.pos {
+  height: 300px !important;
+}
+</style>

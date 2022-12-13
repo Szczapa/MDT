@@ -1,5 +1,8 @@
 <template>
   <div class="page-content p-5 bg-light vh-100" id="content">
+    <button class="btn ContisnotCollapse">
+      <i class="fa fa-bars"></i>
+    </button>
     <div class="py-4">
       <header class="pb-3 mb-4 border-bottom">
         <a

@@ -1,9 +1,12 @@
 <template>
   <div class="page-content p-5 bg-light vh-100" id="content">
+    <button class="btn ContisnotCollapse">
+      <i class="fa fa-bars"></i>
+    </button>
     <div class="py-4">
       <header class="pb-3 mb-4 border-bottom">
         <a
-          href="/"
+          href="/report"
           class="d-flex align-items-center text-dark text-decoration-none"
         >
           <svg
@@ -21,17 +24,24 @@
               d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"
             />
           </svg>
-          <span class="fs-4 ms-2"> <strong>Systeme de Rapport</strong></span>
+          <span class="fs-4 ms-2"> <strong>Créateur de Rapport</strong></span>
         </a>
       </header>
-      <div class="row">
-        <div class="col-12"></div>
-      </div>
-      <div class="row vw-100"></div>
+      <ReportForm />
       <footer class="pt-3 mt-4 text-muted border-top">
         © MDT-Systeme 2022
       </footer>
     </div>
   </div>
 </template>
-<script></script>
+<script>
+// @ is an alias to /src
+import ReportForm from "@/components/ReportSystem.vue";
+
+export default {
+  name: "ReportView",
+  components: {
+    ReportForm,
+  },
+};
+</script>

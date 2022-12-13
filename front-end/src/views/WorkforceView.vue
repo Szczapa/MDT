@@ -3,7 +3,7 @@
     <div class="py-4">
       <header class="pb-3 mb-4 border-bottom">
         <a
-          href="/"
+          href="/workforce"
           class="d-flex align-items-center text-dark text-decoration-none"
         >
           <svg
@@ -25,7 +25,7 @@
       </header>
       <div class="row">
         <div class="col">
-          <router-link to="/register" class="btn">
+          <div class="btn" @click="redirect">
             <span class="nav_txt"
               ><svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -40,9 +40,10 @@
                 />
                 <path
                   d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"
-                /></svg
-            ></span>
-          </router-link>
+                />
+              </svg>
+            </span>
+          </div>
         </div>
       </div>
 
@@ -56,12 +57,32 @@
 
 <script>
 // @ is an alias to /src
-import WorkforceList from "@/components/UsersList.vue";
+import WorkforceList from "@/components/WorkForce.vue";
 
 export default {
   name: "WorkforceView",
   components: {
     WorkforceList,
+  },
+  methods: {
+    async redirect() {
+      console.log("ici");
+      const checkToken = await fetch("/checkGrade", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+
+      const data = await checkToken.json();
+
+      if (localStorage.getItem("token") === null || data.error === true) {
+        alert("Vous n'avez pas les droits pour accéder à cette page");
+      } else {
+        this.$router.push("/register");
+      }
+    },
   },
 };
 </script>

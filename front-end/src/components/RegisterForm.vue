@@ -162,7 +162,7 @@ export default {
         body: JSON.stringify(this.userToAdd),
       });
       console.log(JSON.stringify(this.userToAdd));
-      // this.$router.push("/login");
+      this.$router.push("/workforce");
     },
   },
 };

@@ -1,8 +1,11 @@
 <template>
   <div class="page-content p-5 bg-light vh-100" id="content">
+    <button class="btn ContisnotCollapse">
+      <i class="fa fa-bars"></i>
+    </button>
     <div class="py-4">
       <main class="form-signin">
-        <form>
+        <div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="72"
@@ -21,30 +24,73 @@
 
           <div class="form-floating">
             <input
-              type="email"
+              type="text"
               class="form-control"
-              id="floatingInput"
-              placeholder="name@example.com"
+              id="userName"
+              placeholder="userName"
+              v-model="logUser.userName"
             />
-            <label for="floatingInput">Adresse Mail</label>
+            <label for="floatingInput">Nom utilisateur</label>
           </div>
           <div class="form-floating">
             <input
               type="password"
               class="form-control"
-              id="floatingPassword"
-              placeholder="Password"
+              id="password"
+              placeholder="password"
+              v-model="logUser.password"
             />
-            <label for="floatingPassword">Mot de passe</label>
+            <label for="password">Mot de passe</label>
           </div>
-          <button class="w-100 btn btn-lg btn-primary" type="submit">
+          <button class="w-100 btn btn-lg btn-primary" v-on:click="loginUser">
             Connection
           </button>
-        </form>
+        </div>
       </main>
+      <div>{{ logUser.userName }}</div>
+      <div>{{ logUser.password }}</div>
       <footer class="pt-3 mt-4 text-muted border-top">
         © MDT-Systeme 2022
       </footer>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  name: "loginSystem",
+  data() {
+    return {
+      logUser: {
+        userName: "",
+        password: "",
+      },
+    };
+  },
+  methods: {
+    async loginUser() {
+      if (this.logUser.userName == "" && this.logUser.password == "") {
+        alert("Veuillez remplir les champs");
+      } else {
+        const response = await fetch("/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(this.logUser),
+        });
+        const data = await response.json();
+        console.log(data);
+        if (data.token) {
+          alert("Connexion réussie");
+          localStorage.setItem("token", data.token);
+
+          this.$router.push("/account");
+        } else {
+          alert("Connexion échouée");
+        }
+      }
+    },
+  },
+};
+</script>
