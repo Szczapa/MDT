@@ -93,7 +93,7 @@ app.post("/register", async (req, res) => {
         userToAdd.firstName,
         userToAdd.lastName,
         userToAdd.userName,
-        userToAdd.password,
+        encryptedPassword,
         userToAdd.grade,
       ]
     );
