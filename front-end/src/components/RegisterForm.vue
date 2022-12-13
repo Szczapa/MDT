@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="bg-light p-3 rounded-3">
     <div class="py-5 text-center">
       <h2>Formulaire d'entrée en service du MDT</h2>
       <p class="lead">
@@ -161,8 +161,13 @@ export default {
         },
         body: JSON.stringify(this.userToAdd),
       });
-      console.log(JSON.stringify(this.userToAdd));
-      this.$router.push("/workforce");
+      const response = await response.json();
+      if (response.error == true) {
+        alert(response.errorMessage);
+      } else {
+        alert("Inscription réussie");
+        this.$router.push("/workforce");
+      }
     },
   },
 };

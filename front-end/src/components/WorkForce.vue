@@ -1,5 +1,5 @@
 <template>
-  <table class="table">
+  <table class="table bg-light rounded-3">
     <thead>
       <tr>
         <th scope="col">Prénom</th>

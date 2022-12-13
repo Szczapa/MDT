@@ -3,6 +3,9 @@
     <button id="sidebarCollapse" class="btn isnotCollapse btn-collapse">
       <i class="fa fa-close"></i>
     </button>
+    <button class="btn ContisCollapse bg-light">
+      <i class="fa fa-bars"></i>
+    </button>
     <div class="py-4 px-3 mb-4 bg-light">
       <div class="media d-flex align-items-center">
         <div @click="redirect" class="nav-link text-dark font-italic">

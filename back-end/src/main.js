@@ -48,12 +48,15 @@ app.post("/register", async (req, res) => {
       /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/
     )
   ) {
-    console.log("caractère interdit");
-    // return;
+    res.json({ error: true, errorMessage: "caractère spéciaux interdit" });
+    res.end();
   }
   if (!userToAdd.password.match(/^[^@&"()!$€£`+=\/;?#]+$/)) {
-    console.log("caractère interdit");
-    // return;
+    res.json({
+      error: true,
+      errorMessage: "caractère interdit dans le mot de passe",
+    });
+    res.end();
   }
   if (
     userToAdd.grade != "Cadet" &&
@@ -66,36 +69,38 @@ app.post("/register", async (req, res) => {
     userToAdd.grade != "Capitaine" &&
     userToAdd.grade != "Commandant/(e)"
   ) {
-    console.log("grade non autorisé");
-    // return;
+    res.json({ error: true, errorMessage: "Grade non valide" });
+    res.end();
   }
 
   const conn = await pool.getConnection();
 
   const checkResult = await conn.query(
-    `SELECT * FROM user WHERE firstname = ? And lastname = ? And username = ?`,
-    [userToAdd.firstName, userToAdd.lastName, userToAdd.userName]
+    `SELECT * FROM user WHERE  username = ?`,
+    [userToAdd.userName]
   );
+  // console.log(checkResult);
   console.log(checkResult.length);
-  if (checkResult.length > 0) {
-    console.log("user already exist");
-    return;
+  if (checkResult.length != 0) {
+    res.json({ error: true, errorMessage: "Utilisateur déjà existant" });
+    console.log("Utilisateur déjà existant");
+    res.end();
+    conn.end();
+  } else {
+    const queryResult = await conn.query(
+      `INSERT INTO user (firstname, lastname, username, password,grade) value (?,?,?,?,?)`,
+      [
+        userToAdd.firstName,
+        userToAdd.lastName,
+        userToAdd.userName,
+        userToAdd.password,
+        userToAdd.grade,
+      ]
+    );
+    // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+    res.end();
+    conn.end();
   }
-
-  const queryResult = await conn.query(
-    `INSERT INTO user (firstname, lastname, username, password,grade) value (?,?,?,?,?)`,
-    [
-      userToAdd.firstName,
-      userToAdd.lastName,
-      userToAdd.userName,
-      userToAdd.password,
-      userToAdd.grade,
-    ]
-  );
-  console.log(queryResult);
-  // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-  res.end();
-  conn.end();
 });
 
 app.delete("/workforce/:id", async (req, res) => {
@@ -108,7 +113,10 @@ app.delete("/workforce/:id", async (req, res) => {
   const User = tokenResult.user;
   if (User.grade != "Commandant/(e)" && User.grade != "Capitaine") {
     res.status(401);
-    res.json({ error: true });
+    res.json({
+      error: true,
+      errorMessage: "Grade insufisant pour supprimer un utilisateur",
+    });
     return;
   }
 
@@ -247,14 +255,14 @@ app.get("/checkGrade", async (req, res) => {
   ]);
   conn.end();
   if (
-    (checkResult.length > 0 && checkResult[0].grade == "Commandant/(e))") ||
+    (checkResult.length > 0 && checkResult[0].grade == "Commandant/(e)") ||
     checkResult[0].grade == "Capitaine"
   ) {
     res.json({ error: false });
     return;
   } else {
     console.log("error");
-    res.json({ error: true });
+    res.json({ error: true, errorMessage: "Grade insufisant" });
     return;
   }
 });

@@ -1,11 +1,15 @@
 <template>
   <div class="container px-4 py-5" id="featured-3">
-    <h2 class="pb-2 border-bottom">Rapport en cours</h2>
-    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-      <div v-for="report in reports" :key="report.id">
+    <h2 class="pb-2 border-bottom text-light fw-bold">Rapport en cours</h2>
+    <div class="row">
+      <div
+        class="col-xl-4 col-lg-12"
+        v-for="report in reports"
+        :key="report.id"
+      >
         <div class="p-3">
-          <div class="feature col border">
-            <div class="p-3">
+          <div class="feature col border rounded-3">
+            <div class="p-3 rounded-3">
               <div class="feature-icon">
                 <i class="fa fa-file" aria-hidden="true"></i>
               </div>
@@ -22,7 +26,7 @@
         </div>
       </div>
     </div>
-    <h2 class="pb-2 border-bottom">Rapport classé</h2>
+    <h2 class="pb-2 border-bottom text-light fw-bold mt-5">Rapport classés</h2>
   </div>
 </template>
 

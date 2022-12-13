@@ -1,8 +1,5 @@
 <template>
-  <div class="page-content p-5 bg-light vh-100" id="content">
-    <button class="btn ContisCollapse">
-      <i class="fa fa-bars"></i>
-    </button>
+  <div class="page-content p-5 bg-light" id="content">
     <div class="py-4">
       <header class="pb-3 mb-4 border-bottom">
         <a
@@ -13,7 +10,7 @@
             xmlns="http://www.w3.org/2000/svg"
             width="35"
             height="35"
-            fill="currentColor"
+            fill="white"
             class="bi bi-newspaper"
             viewBox="0 0 16 16"
           >
@@ -24,7 +21,9 @@
               d="M2 3h10v2H2V3zm0 3h4v3H2V6zm0 4h4v1H2v-1zm0 2h4v1H2v-1zm5-6h2v1H7V6zm3 0h2v1h-2V6zM7 8h2v1H7V8zm3 0h2v1h-2V8zm-3 2h2v1H7v-1zm3 0h2v1h-2v-1zm-3 2h2v1H7v-1zm3 0h2v1h-2v-1z"
             />
           </svg>
-          <span class="fs-4 ms-2"> <strong> MDT Central Service</strong></span>
+          <span class="fs-4 ms-2 text-light">
+            <strong> MDT Central Service</strong></span
+          >
         </a>
       </header>
 
@@ -47,9 +46,11 @@
             <li>Sécurisation des droit par token</li>
             <li>Affichage des Rapport</li>
             <li>Création de Rapport</li>
+            <li>Fonctionnel Format Desktop / tablette / telephone</li>
+
             <br />
             <strong>Futur :</strong>
-            <li>Système de classement des Affaires par statut</li>
+            <li>Système de classement des rapports par statut</li>
             <li>Livre des peines</li>
           </ul>
         </div>
@@ -58,7 +59,7 @@
         <div class="col-md-6">
           <div class="pos">
             <div
-              class="h-100 p-3 text-white bg-dark rounded-3 position-relative"
+              class="h-100 p-3 text-white bg-light rounded-3 position-relative"
             >
               <div class="panel-body table-responsive">
                 <table class="table table-bordered">
@@ -85,7 +86,7 @@
                   to="/workforce"
                   class="nav-link text-dark font-italic"
                 >
-                  <span class="btn btn-outline-light">Voir</span>
+                  <span class="btn btn-outline-dark">Voir</span>
                 </router-link>
               </div>
             </div>
@@ -95,16 +96,16 @@
           <div class="h-100 p-2 bg-light border rounded-3 listResponsive">
             <div class="row h-100">
               <div
-                class="col-4 mt-1"
+                class="col-xl-6 col-sl-12 mt-1"
                 v-for="report in reports"
                 :key="report.id"
               >
-                <div class="feature col border">
+                <div class="feature rounded-3 col border">
                   <div class="p-3">
                     <div class="feature-icon">
                       <i class="fa fa-file" aria-hidden="true"></i>
                     </div>
-                    <h3>{{ report.title }}</h3>
+                    <h4 class="report_title">{{ report.title }}</h4>
                   </div>
                 </div>
               </div>
@@ -112,7 +113,7 @@
           </div>
         </div>
       </div>
-      <footer class="pt-3 mt-4 text-muted border-top">
+      <footer class="pt-3 mt-4 fw-bold text-light border-top">
         © MDT-Systeme 2022
       </footer>
     </div>

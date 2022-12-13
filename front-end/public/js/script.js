@@ -5,53 +5,66 @@ window.addEventListener("load", function () {
   let viewportwidth = document.documentElement.clientWidth;
 
   // if viewport is less than 768px
+
   if (viewportwidth < 768) {
-    // hide sidebar
-    document.getElementById("sidebar").classList.remove("active");
-    document.getElementById("content").classList.remove("active"); // display open button
-    //event on click
-    openButton[0].addEventListener("click", function () {
-      document.getElementById("sidebar").classList.toggle("active");
-      document.getElementById("content").classList.toggle("active");
-      displayButton(openButton);
-    });
-  } else {
+    document.getElementById("sidebar").classList.add("active");
+    document.getElementById("content").classList.add("active");
+    openButton[0].style.display = "block";
+
     closeButton.addEventListener("click", function () {
-      console.log("click");
       // toggle class active on sidebar and content
       document.getElementById("sidebar").classList.toggle("active");
       document.getElementById("content").classList.toggle("active");
-      displayButton(openButton);
+      //display none on open button
+      openButton[0].style.display = "block";
     });
-  }
-});
 
-function displayButton(openButton) {
-  for (let i = 0; i < openButton.length; i++) {
-    //if display is none
-    if (openButton[i].style.display === "none") {
-      openButton[i].style.display = "block";
-      //envent listener for each button
+    for (let i = 0; i < openButton.length; i++) {
       openButton[i].addEventListener("click", function () {
-        console.log("click2");
         // toggle class active on sidebar and content
-        document.getElementById("sidebar").classList.remove("active");
-        document.getElementById("content").classList.remove("active");
-        openButton[i].style.display = "none";
+        document.getElementById("sidebar").classList.toggle("active");
+        document.getElementById("content").classList.toggle("active");
+        //display none on open button
+        openButton[0].style.display = "none";
       });
-    } else {
-      console.log("ici");
-      openButton[i].style.display = "none";
-      document.getElementById("sidebar").classList.add("active");
-      document.getElementById("content").classList.add("active");
-      const closeButton = document.getElementById("sidebarCollapse");
-      closeButton.addEventListener("click", function () {
-        console.log("click");
+    }
+  } else {
+    closeButton.addEventListener("click", function () {
+      // toggle class active on sidebar and content
+      document.getElementById("sidebar").classList.toggle("active");
+      document.getElementById("content").classList.toggle("active");
+      //display none on open button
+      openButton[0].style.display = "block";
+    });
+
+    for (let i = 0; i < openButton.length; i++) {
+      openButton[i].addEventListener("click", function () {
         // toggle class active on sidebar and content
-        document.getElementById("sidebar").classList.remove("active");
-        document.getElementById("content").classList.remove("active");
-        displayButton(openButton);
+        document.getElementById("sidebar").classList.toggle("active");
+        document.getElementById("content").classList.toggle("active");
+        //display none on open button
+        openButton[0].style.display = "none";
       });
     }
   }
-}
+
+  //window resize
+  window.addEventListener("resize", function () {
+    let viewportwidth = document.documentElement.clientWidth;
+    let sidebar = document.getElementById("sidebar");
+    if (viewportwidth < 768) {
+      if ((openButton[0].style.display = "none")) {
+        openButton[0].style.display = "block";
+        document.getElementById("sidebar").classList.add("active");
+        document.getElementById("content").classList.add("active");
+      }
+      // si clic hors du menu alors fermer le menu
+    } else {
+      if ((openButton[0].style.display = "block")) {
+        openButton[0].style.display = "none";
+        document.getElementById("sidebar").classList.remove("active");
+        document.getElementById("content").classList.remove("active");
+      }
+    }
+  });
+});

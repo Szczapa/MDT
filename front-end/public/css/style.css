@@ -1,3 +1,6 @@
+body {
+  background: #6296c7 !important;
+}
 .sidebar_background {
   background: rgb(238, 238, 238);
 }
@@ -77,8 +80,11 @@
   display: block !important;
 }
 
-#content .ContisCollapse {
+#sidebar .ContisCollapse {
   display: none;
+  position: absolute;
+  right: -45px;
+  top: 25px;
 }
 
 #content.active {
@@ -86,24 +92,39 @@
   margin: 0;
 }
 
+.feature {
+  background: white !important;
+}
+
+#content {
+  height: 100% !important;
+  background: #6296c7 !important;
+}
+
+.report_title {
+  font-weight: 600;
+}
+
+.bi-person-add {
+  color: white;
+}
 @media (max-width: 768px) {
-  #sidebar {
+  #sidebar .active {
     margin-left: -17rem;
   }
-  #sidebar.active {
+  #sidebar {
     margin-left: 0;
-  }
-  #content {
-    width: 100%;
-    margin: 0;
+    height: 100%;
   }
   #content.active {
-    margin-left: 17rem;
-    width: calc(100% - 17rem);
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0;
   }
-
-  #content .ContisCollapse {
-    display: block;
+  #content {
+    margin-left: 17rem;
+    width: 100%;
+    height: 100vh !important;
   }
 }
 
