@@ -18,8 +18,10 @@
             />
           </div>
           <div class="media-body media_padding">
-            <h4 class="m-0">Johnson Bishop</h4>
-            <p class="font-weight-light text-muted mb-0">Capitaine</p>
+            <div v-for="user in userInfo" :key="user.id">
+              <h4 class="m-0">{{ user.firstName }}</h4>
+              <p class="font-weight-light text-muted mb-0">Capitaine</p>
+            </div>
           </div>
         </div>
         <div v-else>
@@ -60,7 +62,7 @@ export default {
   name: "App",
   data() {
     return {
-      userInfo: null,
+      userInfo: [],
     };
   },
   methods: {
@@ -91,10 +93,11 @@ export default {
         },
       });
       const userResult = await takeUSer.json();
-      if (userResult.error === false) {
-        this.userInfo = userResult.user;
+
+      if (userResult.error === true) {
+        this.userInfo = [];
       } else {
-        this.userInfo = null;
+        this.userInfo = userResult;
       }
     },
   },

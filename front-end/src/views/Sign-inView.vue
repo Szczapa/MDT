@@ -83,7 +83,7 @@ export default {
           alert("Connexion réussie");
           localStorage.setItem("token", data.token);
 
-          this.$router.push("/account");
+          this.$router.push("/");
         } else {
           this.error = "connexion échouée";
         }

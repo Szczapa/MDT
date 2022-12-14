@@ -33,21 +33,22 @@ app.get("/user", async (req, res) => {
   const tokenResult = await checkToken(req);
   if (tokenResult.error == true) {
     res.status(401);
-    res.json({ error: true });
+    res.json({ error: true, errorMessage: "Token invalide" });
     return;
   }
-  const userToken = tokenResult.user;
+  const userToken = tokenResult.user.token;
+  console.log(userToken);
   const conn = await pool.getConnection();
   const user = await conn.query("SELECT * FROM user where token = ?", [
     userToken,
   ]);
   if (user.length == 0) {
     res.status(401);
-    res.json({ error: true });
+    res.json({ error: true, errorMessage: "aucun user" });
     conn.end();
     return;
   } else {
-    res.json(user);
+    res.json(user[0]);
     conn.end();
   }
 });
@@ -119,7 +120,7 @@ app.post("/register", async (req, res) => {
     [userToAdd.userName]
   );
   // console.log(checkResult);
-  console.log(checkResult.length);
+  // console.log(checkResult.length);
   if (checkResult.length != 0) {
     res.json({ error: true, errorMessage: "Utilisateur déjà existant" });
     conn.end();
@@ -236,7 +237,7 @@ app.post("/login", async (req, res) => {
   const userToLogin = req.body;
   const conn = await pool.getConnection();
   const encryptedPassword = sha1(userToLogin.password);
-  console.log(encryptedPassword);
+  // console.log(encryptedPassword);
   const checkResult = await conn.query(
     `SELECT id FROM user WHERE username = ? And password = ?`,
     [userToLogin.userName, encryptedPassword]
@@ -313,10 +314,10 @@ app.get("/checkGrade", async (req, res) => {
 });
 
 async function checkToken(req) {
-  const token = req.headers.autorization?.split(" ")[1];
-  console.log(token, "token");
+  const token = req.headers.authorization?.split(" ")[1];
+
   if (!token) {
-    return { error: true };
+    return { error: true, errorMessage: "Token invalide" };
   }
   const conn = await pool.getConnection();
   const checkResult = await conn.query("SELECT * FROM user WHERE token = ?", [
@@ -326,7 +327,7 @@ async function checkToken(req) {
   if (checkResult.length > 0) {
     return { error: false, user: checkResult[0] };
   } else {
-    return { error: true };
+    return { error: true, errorMessage: "Aucun utilisateur" };
   }
 }
 app.listen(3000);
