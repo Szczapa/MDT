@@ -123,7 +123,6 @@ export default {
   },
   methods: {
     async postUser() {
-      console.log(this.userToAdd);
       if (
         this.userToAdd.firstName === "" ||
         this.userToAdd.lastName === "" ||
@@ -162,7 +161,7 @@ export default {
         body: JSON.stringify(this.userToAdd),
       });
       const data = await response.json();
-      console.log(response);
+
       if (data.error == true) {
         this.error = data.errorMessage;
       } else if (data.error == false) {
@@ -180,7 +179,7 @@ export default {
         },
       });
       const data2 = await checkgradeResponse.json();
-      console.log(data2);
+
       if (data2.error == true) {
         this.$router.push("/*");
       }

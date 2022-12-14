@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     async redirect() {
-      console.log("ici");
       const checkToken = await fetch("/checkGrade", {
         method: "GET",
         headers: {

@@ -93,12 +93,11 @@ export default {
         },
       });
       const userResult = await takeUSer.json();
-      console.log(userResult);
+
       if (userResult.error === true) {
         this.userInfo = [];
       } else {
         this.userInfo = userResult;
-        console.log(userResult);
       }
     },
   },

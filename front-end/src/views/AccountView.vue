@@ -51,7 +51,7 @@ export default {
         },
       });
       const data2 = await checkgradeResponse.json();
-      console.log(data2);
+
       if (data2.error == true) {
         this.$router.push("/signin");
       }

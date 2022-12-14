@@ -55,7 +55,6 @@ export default {
   },
   methods: {
     async postReport() {
-      console.log(this.reportToAdd);
       if (this.reportToAdd.report === "" || this.reportToAdd.title === "") {
         alert(
           "L'enregistrement est incomplet. Veuillez remplir tous les champs."
@@ -70,8 +69,6 @@ export default {
         },
         body: JSON.stringify(this.reportToAdd),
       });
-      console.log(JSON.stringify(this.reportToAdd));
-      // this.$router.push("/login");
     },
   },
 };

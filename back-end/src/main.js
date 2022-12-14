@@ -1,9 +1,3 @@
-// import standard JS (imports EcmaScript)
-// Pour info: EcmaScript est un standard pour langages de programmation
-// JavaScript est un langage de programmation qui utilise le standard EcmaScript
-// ActionScript (utilisé pour Flash) implémente aussi EcmaScript
-
-// Ajouter dans le package.json "type": "module" car node ne supporte pas les modules ES nativement
 import express from "express";
 import bodyParser from "body-parser";
 import mariadb from "mariadb";
@@ -112,8 +106,7 @@ app.post("/register", async (req, res) => {
     `SELECT * FROM user WHERE  username = ?`,
     [userToAdd.userName]
   );
-  // console.log(checkResult);
-  // console.log(checkResult.length);
+
   if (checkResult.length != 0) {
     res.json({ error: true, errorMessage: "Utilisateur déjà existant" });
     conn.end();
@@ -190,18 +183,6 @@ app.get("/workforce/:id", async (req, res) => {
   conn.end();
 });
 
-// // Modifier le prix d'un plat (le json contient le nom et le nouveau prix)
-// app.put("/dish", (req, res) => {
-//   const dish = req.body;
-//   const index = dishes.findIndex((p) => p.name === dish.name);
-//   if (index != -1) {
-//     dishes[index] = dish;
-//   } else {
-//     res.status(400);
-//   }
-//   res.end();
-// });
-
 /* Gestion des Rapport */
 app.post("/report", async (req, res) => {
   const reportToAdd = req.body;
@@ -212,7 +193,6 @@ app.post("/report", async (req, res) => {
     [reportToAdd.title, reportToAdd.report]
   );
 
-  console.log(queryResult);
   // { affectedRows: 1, insertId: 1, warningStatus: 0 }
   res.end();
   conn.end();
@@ -230,12 +210,12 @@ app.post("/login", async (req, res) => {
   const userToLogin = req.body;
   const conn = await pool.getConnection();
   const encryptedPassword = sha1(userToLogin.password);
-  // console.log(encryptedPassword);
+
   const checkResult = await conn.query(
     `SELECT id FROM user WHERE username = ? And password = ?`,
     [userToLogin.userName, encryptedPassword]
   );
-  console.log(checkResult.length);
+
   if (checkResult.length > 0) {
     let newtoken = token();
     const queryResult = await conn.query(
@@ -247,7 +227,6 @@ app.post("/login", async (req, res) => {
     conn.end();
     return;
   } else {
-    console.log("user doesn't exist");
     res.json(checkResult);
     conn.end();
     return;
@@ -284,8 +263,7 @@ var token = function () {
 
 app.get("/checkToken", async (req, res) => {
   const token = req.headers.authorisation?.split(" ")[1];
-  console.log(req.headers, "1");
-  console.log(token);
+
   if (!token) {
     res.json({ error: true, errorMessage: "Token non valide 1" });
     return;
@@ -299,7 +277,6 @@ app.get("/checkToken", async (req, res) => {
     res.json({ error: false });
     return;
   } else {
-    console.log("error");
     res.json({ error: true });
     return;
   }
@@ -307,7 +284,7 @@ app.get("/checkToken", async (req, res) => {
 
 app.get("/checkGrade", async (req, res) => {
   const tokenResult = await checkToken(req);
-  console.log(tokenResult, "2");
+
   if (tokenResult.error == true) {
     res.status(401);
     res.json({ error: true, errorMessage: "Aucun utilisateur" });
@@ -319,7 +296,6 @@ app.get("/checkGrade", async (req, res) => {
     res.json({ error: false });
     return;
   } else {
-    console.log("error");
     res.json({ error: true, errorMessage: "Grade insufisant" });
     return;
   }
@@ -327,8 +303,7 @@ app.get("/checkGrade", async (req, res) => {
 
 async function checkToken(req) {
   const token = req.headers.authorisation?.split(" ")[1];
-  console.log(req.headers, "3");
-  console.log(token, "token");
+
   if (!token) {
     return { error: true, errorMessage: "Token invalide" };
   }

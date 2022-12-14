@@ -79,7 +79,7 @@ export default {
         },
       });
       const result = await response.json();
-      console.log(result);
+
       if (result.error == false) {
         this.workforce = this.workforce.filter((worker) => worker.id !== id);
         this.success = result.successMessage;
