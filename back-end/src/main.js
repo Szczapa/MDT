@@ -8,7 +8,7 @@ const pool = mariadb.createPool({
   // host: "localhost", //  mettre url de connexion ici
   host: "mysql-projetmdt.alwaysdata.net", //  mettre url de connexion ici
   // user: "root",
-  user: "projetmdt ",
+  user: "projetmdt",
   // password: "",
   password: "**projet_mdt**",
   // database: "mdt",
@@ -325,5 +325,5 @@ async function checkToken(req) {
     return { error: true, errorMessage: "Aucun utilisateur" };
   }
 }
-const port = process.env.ALWAYSDATA_HTTPD_PORT || 3000;
+const port = process.env.ALWAYSDATA_HTTPD_PORT ?? process.env.PORT ?? 3000;
 app.listen(port);
