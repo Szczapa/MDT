@@ -5,14 +5,14 @@ import sha1 from "sha1";
 
 // Connexion à la BDD
 const pool = mariadb.createPool({
-  host: "localhost", //  mettre url de connexion ici
-  // host: "mysql-projetmdt.alwaysdata.net", //  mettre url de connexion ici
-  user: "root",
-  // user: "projetmdt ",
-  password: "",
-  // password: "**projet_mdt**",
-  database: "mdt",
-  // database: "projetmdt_mdt",
+  // host: "localhost", //  mettre url de connexion ici
+  host: "mysql-projetmdt.alwaysdata.net", //  mettre url de connexion ici
+  // user: "root",
+  user: "projetmdt ",
+  // password: "",
+  password: "**projet_mdt**",
+  // database: "mdt",
+  database: "projetmdt_mdt",
   port: 3306,
   connectionLimit: 5,
 });
@@ -185,16 +185,23 @@ app.get("/workforce/:id", async (req, res) => {
 
 /* Gestion des Rapport */
 app.post("/report", async (req, res) => {
+  const tokenResult = await checkToken(req);
+  console.log(tokenResult);
+  if (tokenResult.error == true) {
+    res.status(401);
+    res.json({ error: true, errorMessage: "Vous n'êtes pas connecté" });
+    return;
+  }
   const reportToAdd = req.body;
   const conn = await pool.getConnection();
-
+  const reportstatut = 1;
   const queryResult = await conn.query(
-    `INSERT INTO report (title, content) value (?,?)`,
-    [reportToAdd.title, reportToAdd.report]
+    `INSERT INTO report (title, content,statut) value (?,?,?)`,
+    [reportToAdd.title, reportToAdd.report, reportstatut]
   );
 
   // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-  res.end();
+  res.json({ error: false, successMessage: "Rapport Enregistré" });
   conn.end();
 });
 
@@ -303,7 +310,7 @@ app.get("/checkGrade", async (req, res) => {
 
 async function checkToken(req) {
   const token = req.headers.authorisation?.split(" ")[1];
-
+  console.log(token);
   if (!token) {
     return { error: true, errorMessage: "Token invalide" };
   }
@@ -318,4 +325,5 @@ async function checkToken(req) {
     return { error: true, errorMessage: "Aucun utilisateur" };
   }
 }
-app.listen(3000);
+const port = process.env.ALWAYSDATA_HTTPD_PORT || 3000;
+app.listen(port);

@@ -1,0 +1,164 @@
+body {
+  background: #6296c7 !important;
+}
+.sidebar_background {
+  background: rgb(238, 238, 238);
+}
+
+.delete:hover,
+.modify:hover {
+  cursor: pointer;
+}
+
+.media_padding {
+  margin-left: 6px;
+}
+
+.nav-item:hover {
+  background: whitesmoke;
+}
+
+.nav_txt {
+  font-weight: 600;
+}
+
+.vertical-nav {
+  min-width: 17rem;
+  width: 17rem;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s;
+}
+
+.page-content {
+  width: calc(100% - 17rem);
+  margin-left: 17rem;
+  transition: all 0.4s;
+}
+
+/*SIGN IN*/
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* for toggle behavior */
+
+#sidebar.active {
+  margin-left: -17rem;
+}
+
+#sidebar .isnotCollapse {
+  position: absolute;
+  right: 10px;
+  top: 5px;
+  display: block !important;
+}
+
+#sidebar .ContisCollapse {
+  display: none;
+  position: absolute;
+  right: -45px;
+  top: 25px;
+}
+
+#content.active {
+  width: 100%;
+  margin: 0;
+}
+
+.feature {
+  background: white !important;
+}
+
+#content {
+  height: 100% !important;
+  background: #6296c7 !important;
+}
+
+.report_title {
+  font-weight: 600;
+}
+
+.bi-person-add {
+  color: white;
+}
+
+.menu_container_open {
+  right: -130px;
+  top: 18px;
+  display: none;
+}
+.menu_container_close {
+  right: -130px;
+  top: 18px;
+  display: none;
+}
+.listOpen_option {
+  min-width: 130px;
+  height: auto;
+  text-align: center;
+}
+
+.listOpen_option div:hover {
+  cursor: pointer;
+  color: green;
+}
+
+.listclasse_option {
+  min-width: 130px;
+  height: auto;
+  text-align: center;
+}
+
+.listclasse_option div:hover {
+  cursor: pointer;
+  color: green;
+}
+
+@media (max-width: 768px) {
+  #sidebar .active {
+    margin-left: -17rem;
+  }
+  #sidebar {
+    margin-left: 0;
+    height: 100%;
+  }
+  #content.active {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0;
+  }
+  #content {
+    margin-left: 17rem;
+    width: 100%;
+    height: 100vh !important;
+  }
+}
+
+/* MODAL*/

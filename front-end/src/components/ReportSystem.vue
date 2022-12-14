@@ -35,7 +35,6 @@
           <button class="w-100 btn btn-primary btn-lg" v-on:click="postReport">
             Soumettre le Rapport
           </button>
-          <div>{{ reportToAdd }}</div>
         </div>
       </div>
     </div>
@@ -61,14 +60,22 @@ export default {
         );
         return;
       }
-
-      await fetch("/report", {
+      const postReport = await fetch("/report", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorisation: "Bearer " + localStorage.getItem("token"),
         },
         body: JSON.stringify(this.reportToAdd),
       });
+
+      const response = await postReport.json();
+      if (response.error === false) {
+        alert(response.successMessage);
+        this.$router.push("/report");
+      } else {
+        alert(response.errorMessage);
+      }
     },
   },
 };
