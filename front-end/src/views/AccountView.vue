@@ -33,4 +33,27 @@
     </div>
   </div>
 </template>
-<script></script>
+<script>
+export default {
+  name: "AccountView",
+  methods: {
+    async checkgrade() {
+      const checkgradeResponse = await fetch("/checkGrade", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Autorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      const data2 = await checkgradeResponse.json();
+      console.log(data2);
+      if (data2.error == true) {
+        this.$router.push("/signin");
+      }
+    },
+  },
+  mounted() {
+    this.checkgrade();
+  },
+};
+</script>

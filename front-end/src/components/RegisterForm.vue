@@ -11,6 +11,7 @@
     <div class="row">
       <div class="col-md-7 col-lg-12">
         <h4 class="mb-3">Informations Agent</h4>
+        <div v-if="error" class="text-danger">{{ error }}</div>
         <div class="needs-validation" novalidate="true" id="register">
           <div class="row g-3">
             <div class="col-sm-6">
@@ -111,6 +112,7 @@ export default {
   props: {},
   data() {
     return {
+      error: null,
       userToAdd: {
         firstName: "",
         lastName: "",
@@ -130,9 +132,8 @@ export default {
         this.userToAdd.grade === "" ||
         this.userToAdd.password === ""
       ) {
-        alert(
-          "L'inscription est incomplète. Veuillez remplir tous les champs."
-        );
+        this.error =
+          "L'inscription est incomplète. Veuillez remplir tous les champs.";
         return;
       }
 
@@ -148,27 +149,46 @@ export default {
           /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/
         )
       ) {
-        alert(
-          "Le prénom / nom de famille et Username ne doivent pas contenir de chiffres ou de caractères"
-        );
+        this.error =
+          "Le prénom / nom de famille et Username ne doivent pas contenir de chiffres ou de caractères";
         return;
       }
 
-      await fetch("/register", {
+      const response = await fetch("/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Autorization: "Bearer " + localStorage.getItem("token"),
         },
         body: JSON.stringify(this.userToAdd),
       });
-      const response = await response.json();
-      if (response.error == true) {
-        alert(response.errorMessage);
-      } else {
-        alert("Inscription réussie");
+      const data = await response.json();
+      console.log(response);
+      if (data.error == true) {
+        this.error = data.errorMessage;
+      } else if (data.error == false) {
+        alert(data.successMessage);
         this.$router.push("/workforce");
       }
     },
+
+    async checkgrade() {
+      const checkgradeResponse = await fetch("/checkGrade", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Autorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      const data2 = await checkgradeResponse.json();
+      console.log(data2);
+      if (data2.error == true) {
+        this.$router.push("/*");
+      }
+    },
+  },
+  mounted() {
+    this.checkgrade();
   },
 };
 </script>

@@ -1,4 +1,6 @@
 <template>
+  <div v-if="error" class="text-danger fw-bold">{{ error }}</div>
+  <div v-if="success" class="text-success fw-bold">{{ success }}</div>
   <table class="table bg-light rounded-3">
     <thead>
       <tr>
@@ -57,6 +59,8 @@ export default {
   name: "WorkforceList",
   data() {
     return {
+      error: null,
+      success: null,
       workforce: [],
     };
   },
@@ -67,34 +71,36 @@ export default {
   props: {},
   methods: {
     async deleteWorker(id) {
-      const Response = await fetch(`/workforce/${id}`, {
+      const response = await fetch(`/workforce/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Autorization: "Bearer " + localStorage.getItem("token"),
         },
       });
-      const Result = await Response.json();
-      if (Result.error == false) {
+      const result = await response.json();
+      console.log(result);
+      if (result.error == false) {
         this.workforce = this.workforce.filter((worker) => worker.id !== id);
+        this.success = result.successMessage;
       } else {
-        alert(Result.errorMessage);
+        this.error = result.errorMessage;
       }
     },
 
     async modifyWorker(id) {
-      const Response = await fetch(`/workforce/${id}`, {
+      const response = await fetch(`/workforce/${id}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           Autorization: "Bearer " + localStorage.getItem("token"),
         },
       });
-      const Result = await Response.json();
-      if (Result.error == false) {
-        alert("Modif possible");
+      const result = await response.json();
+      if (result.error == false) {
+        alert("Modification disponible dans une prochaine mise à jour");
       } else {
-        alert();
+        alert("Modif impossible");
       }
     },
   },

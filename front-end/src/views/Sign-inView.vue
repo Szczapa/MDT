@@ -18,7 +18,7 @@
             />
           </svg>
           <h1 class="h3 mb-3">Connection</h1>
-
+          <div v-if="error" class="text-danger">{{ error }}</div>
           <div class="form-floating">
             <input
               type="text"
@@ -58,6 +58,7 @@ export default {
   name: "loginSystem",
   data() {
     return {
+      error: null,
       logUser: {
         userName: "",
         password: "",
@@ -67,7 +68,7 @@ export default {
   methods: {
     async loginUser() {
       if (this.logUser.userName == "" && this.logUser.password == "") {
-        alert("Veuillez remplir les champs");
+        this.error = "Veuillez remplir les champs";
       } else {
         const response = await fetch("/login", {
           method: "POST",
@@ -84,7 +85,7 @@ export default {
 
           this.$router.push("/account");
         } else {
-          alert("Connexion échouée");
+          this.error = "connexion échouée";
         }
       }
     },

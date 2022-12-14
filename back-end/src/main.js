@@ -7,6 +7,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import mariadb from "mariadb";
+import sha1 from "sha1";
 
 // Connexion à la BDD
 const pool = mariadb.createPool({
@@ -28,6 +29,29 @@ app.use(bodyParser.json());
 
 app.use("/", express.static("public"));
 
+app.get("/user", async (req, res) => {
+  const tokenResult = await checkToken(req);
+  if (tokenResult.error == true) {
+    res.status(401);
+    res.json({ error: true });
+    return;
+  }
+  const userToken = tokenResult.user;
+  const conn = await pool.getConnection();
+  const user = await conn.query("SELECT * FROM user where token = ?", [
+    userToken,
+  ]);
+  if (user.length == 0) {
+    res.status(401);
+    res.json({ error: true });
+    conn.end();
+    return;
+  } else {
+    res.json(user);
+    conn.end();
+  }
+});
+
 app.get("/workforce", async (req, res) => {
   const conn = await pool.getConnection();
   const workforce = await conn.query("SELECT * FROM user");
@@ -36,6 +60,21 @@ app.get("/workforce", async (req, res) => {
 });
 
 app.post("/register", async (req, res) => {
+  const tokenResult = await checkToken(req);
+  if (tokenResult.error == true) {
+    res.status(401);
+    res.json({ error: true, errorMessage: "HAHAHA Bien tenté petit counnard" });
+    return;
+  }
+  const User = tokenResult.user;
+  if (User.grade != "Commandant/(e)" && User.grade != "Capitaine") {
+    res.status(401);
+    res.json({
+      error: true,
+      errorMessage: "Grade insufisant pour supprimer un utilisateur",
+    });
+    return;
+  }
   const userToAdd = req.body;
   if (
     !userToAdd.firstName.match(
@@ -83,10 +122,9 @@ app.post("/register", async (req, res) => {
   console.log(checkResult.length);
   if (checkResult.length != 0) {
     res.json({ error: true, errorMessage: "Utilisateur déjà existant" });
-    console.log("Utilisateur déjà existant");
-    res.end();
     conn.end();
   } else {
+    const encryptedPassword = sha1(userToAdd.password);
     const queryResult = await conn.query(
       `INSERT INTO user (firstname, lastname, username, password,grade) value (?,?,?,?,?)`,
       [
@@ -97,8 +135,7 @@ app.post("/register", async (req, res) => {
         userToAdd.grade,
       ]
     );
-    // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-    res.end();
+    res.json({ error: false, successMessage: "Utilisateur Enregistré" });
     conn.end();
   }
 });
@@ -107,7 +144,7 @@ app.delete("/workforce/:id", async (req, res) => {
   const tokenResult = await checkToken(req);
   if (tokenResult.error == true) {
     res.status(401);
-    res.json({ error: true });
+    res.json({ error: true, errorMessage: "erreur de Connection" });
     return;
   }
   const User = tokenResult.user;
@@ -132,7 +169,7 @@ app.delete("/workforce/:id", async (req, res) => {
   const id = req.params.id;
   const conn = await pool.getConnection();
   const queryResult = await conn.query(`DELETE FROM user WHERE id = ?`, [id]);
-  res.json({ error: false });
+  res.json({ error: false, successMessage: "Utilisateur supprimé" });
   conn.end();
 });
 
@@ -146,7 +183,7 @@ app.get("/workforce/:id", async (req, res) => {
   const User = tokenResult.user;
   if (User.grade != "Commandant/(e)" && User.grade != "Capitaine") {
     res.status(401);
-    res.json({ error: true });
+    res.json({ error: true, errorMessage: "Grade insufisant" });
     return;
   }
 
@@ -198,10 +235,11 @@ app.get("/reports", async (req, res) => {
 app.post("/login", async (req, res) => {
   const userToLogin = req.body;
   const conn = await pool.getConnection();
-
+  const encryptedPassword = sha1(userToLogin.password);
+  console.log(encryptedPassword);
   const checkResult = await conn.query(
     `SELECT id FROM user WHERE username = ? And password = ?`,
-    [userToLogin.userName, userToLogin.password]
+    [userToLogin.userName, encryptedPassword]
   );
   console.log(checkResult.length);
   if (checkResult.length > 0) {
@@ -212,10 +250,12 @@ app.post("/login", async (req, res) => {
     );
 
     res.json({ token: newtoken });
+    conn.end();
     return;
   } else {
     console.log("user doesn't exist");
     res.json(checkResult);
+    conn.end();
     return;
   }
 });
@@ -249,6 +289,11 @@ app.get("/checkToken", async (req, res) => {
 
 app.get("/checkGrade", async (req, res) => {
   const token = req.headers.authorization?.split(" ")[1];
+  console.log(token);
+  if (!token) {
+    res.json({ error: true });
+    return;
+  }
   const conn = await pool.getConnection();
   const checkResult = await conn.query("SELECT * FROM user WHERE token = ?", [
     token,
@@ -256,7 +301,7 @@ app.get("/checkGrade", async (req, res) => {
   conn.end();
   if (
     (checkResult.length > 0 && checkResult[0].grade == "Commandant/(e)") ||
-    checkResult[0].grade == "Capitaine"
+    (checkResult.length > 0 && checkResult[0].grade == "Capitaine")
   ) {
     res.json({ error: false });
     return;
@@ -269,7 +314,10 @@ app.get("/checkGrade", async (req, res) => {
 
 async function checkToken(req) {
   const token = req.headers.autorization?.split(" ")[1];
-
+  console.log(token, "token");
+  if (!token) {
+    return { error: true };
+  }
   const conn = await pool.getConnection();
   const checkResult = await conn.query("SELECT * FROM user WHERE token = ?", [
     token,

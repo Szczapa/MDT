@@ -1,4 +1,5 @@
 <template>
+  <MenuSide />
   <div class="page-content p-5 bg-light" id="content">
     <div class="py-4">
       <header class="pb-3 mb-4 border-bottom">
@@ -58,11 +59,13 @@
 <script>
 // @ is an alias to /src
 import WorkforceList from "@/components/WorkForce.vue";
+import MenuSide from "@/components/MenuSide.vue";
 
 export default {
   name: "WorkforceView",
   components: {
     WorkforceList,
+    MenuSide,
   },
   methods: {
     async redirect() {

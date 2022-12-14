@@ -1,5 +1,5 @@
 <template>
-  <!-- <div class="vertical-nav sidebar_background" id="sidebar">
+  <div class="vertical-nav sidebar_background" id="sidebar">
     <button id="sidebarCollapse" class="btn isnotCollapse btn-collapse">
       <i class="fa fa-close"></i>
     </button>
@@ -8,10 +8,10 @@
     </button>
     <div class="py-4 px-3 mb-4 bg-light">
       <div class="media d-flex align-items-center">
-        <div v-if="user">
+        <div v-if="userInfo">
           <div @click="redirect" class="nav-link text-dark font-italic">
             <img
-              src="./assets/ppBishop.jpg"
+              src="../assets/ppBishop.jpg"
               alt="User img"
               width="65"
               class="mr-3 rounded-circle img-thumbnail shadow-sm"
@@ -52,55 +52,54 @@
         </router-link>
       </li>
     </ul>
-  </div> -->
-  <router-view />
+  </div>
 </template>
 
 <script>
-// export default {
-//   name: "App",
-//   data() {
-//     return {
-//       user: null,
-//     };
-//   },
-//   methods: {
-//     async redirect() {
-//       const checkToken = await fetch("/checkToken", {
-//         method: "GET",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: "Bearer " + localStorage.getItem("token"),
-//         },
-//       });
+export default {
+  name: "App",
+  data() {
+    return {
+      userInfo: null,
+    };
+  },
+  methods: {
+    async redirect() {
+      const checkToken = await fetch("/checkToken", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
 
-//       const data = await checkToken.json();
+      const data = await checkToken.json();
 
-//       if (localStorage.getItem("token") === null || data.error === true) {
-//         this.$router.push("/signin");
-//       } else {
-//         this.$router.push("/account");
-//       }
-//     },
+      if (localStorage.getItem("token") === null || data.error === true) {
+        this.$router.push("/signin");
+      } else {
+        this.$router.push("/account");
+      }
+    },
 
-//     async user() {
-//       const takeUSer = await fetch("/user", {
-//         method: "GET",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: "Bearer " + localStorage.getItem("token"),
-//         },
-//       });
-//       const userResult = await takeUSer.json();
-//       if (userResult.error === false) {
-//         this.user = userResult.user;
-//       } else {
-//         this.user = null;
-//       }
-//     },
-//   },
-//   mounted() {
-//     this.user();
-//   },
-// };
+    async user() {
+      const takeUSer = await fetch("/user", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      const userResult = await takeUSer.json();
+      if (userResult.error === false) {
+        this.userInfo = userResult.user;
+      } else {
+        this.userInfo = null;
+      }
+    },
+  },
+  mounted() {
+    this.user();
+  },
+};
 </script>
