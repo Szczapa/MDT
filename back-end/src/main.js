@@ -33,23 +33,16 @@ app.get("/user", async (req, res) => {
   const tokenResult = await checkToken(req);
   if (tokenResult.error == true) {
     res.status(401);
-    res.json({ error: true, errorMessage: "Token invalide" });
+    res.json({ error: true, errorMessage: "Aucun utilisateur" });
     return;
   }
-  const userToken = tokenResult.user.token;
-  console.log(userToken);
-  const conn = await pool.getConnection();
-  const user = await conn.query("SELECT * FROM user where token = ?", [
-    userToken,
-  ]);
+  const user = tokenResult.user;
   if (user.length == 0) {
     res.status(401);
     res.json({ error: true, errorMessage: "aucun user" });
-    conn.end();
     return;
   } else {
-    res.json(user[0]);
-    conn.end();
+    res.json(user);
   }
 });
 
@@ -153,7 +146,7 @@ app.delete("/workforce/:id", async (req, res) => {
     res.status(401);
     res.json({
       error: true,
-      errorMessage: "Grade insufisant pour supprimer un utilisateur",
+      errorMessage: "Grade insufisant pour checkTokensupprimer un utilisateur",
     });
     return;
   }
@@ -261,6 +254,24 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.patch("/disconnect", async (req, res) => {
+  const tokenResult = await checkToken(req);
+  if (tokenResult.error == true) {
+    res.status(401);
+    res.json({ error: true, errorMessage: "Erreur de déconnexion" });
+    return;
+  }
+  const user = tokenResult.user;
+  const conn = await pool.getConnection();
+  // patch user token to null
+  const queryResult = await conn.query(
+    "UPDATE user SET token = ? WHERE id = ?",
+    [null, user.id]
+  );
+  res.json({ error: false, successMessage: "Déconnexion réussie" });
+  conn.end();
+});
+
 /*Gestion des TOKKEN & CHECK DROIT */
 
 var rand = function () {
@@ -272,7 +283,13 @@ var token = function () {
 };
 
 app.get("/checkToken", async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
+  const token = req.headers.authorisation?.split(" ")[1];
+  console.log(req.headers, "1");
+  console.log(token);
+  if (!token) {
+    res.json({ error: true, errorMessage: "Token non valide 1" });
+    return;
+  }
   const conn = await pool.getConnection();
   const checkResult = await conn.query("SELECT * FROM user WHERE token = ?", [
     token,
@@ -289,21 +306,16 @@ app.get("/checkToken", async (req, res) => {
 });
 
 app.get("/checkGrade", async (req, res) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  console.log(token);
-  if (!token) {
-    res.json({ error: true });
+  const tokenResult = await checkToken(req);
+  console.log(tokenResult, "2");
+  if (tokenResult.error == true) {
+    res.status(401);
+    res.json({ error: true, errorMessage: "Aucun utilisateur" });
     return;
   }
-  const conn = await pool.getConnection();
-  const checkResult = await conn.query("SELECT * FROM user WHERE token = ?", [
-    token,
-  ]);
-  conn.end();
-  if (
-    (checkResult.length > 0 && checkResult[0].grade == "Commandant/(e)") ||
-    (checkResult.length > 0 && checkResult[0].grade == "Capitaine")
-  ) {
+  const user = tokenResult.user;
+
+  if (user.grade == "Commandant/(e)" || user.grade == "Capitaine") {
     res.json({ error: false });
     return;
   } else {
@@ -314,8 +326,9 @@ app.get("/checkGrade", async (req, res) => {
 });
 
 async function checkToken(req) {
-  const token = req.headers.authorization?.split(" ")[1];
-
+  const token = req.headers.authorisation?.split(" ")[1];
+  console.log(req.headers, "3");
+  console.log(token, "token");
   if (!token) {
     return { error: true, errorMessage: "Token invalide" };
   }

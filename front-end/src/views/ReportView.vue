@@ -1,4 +1,5 @@
 <template>
+  <MenuSide />
   <div class="page-content p-5 bg-light" id="content">
     <div class="py-4">
       <header class="pb-3 mb-4 border-bottom">
@@ -35,10 +36,12 @@
 </template>
 <script>
 import ReportList from "@/components/ReportList.vue";
+import MenuSide from "@/components/MenuSide.vue";
 export default {
   name: "ReportView",
   components: {
     ReportList,
+    MenuSide,
   },
 };
 </script>

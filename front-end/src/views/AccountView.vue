@@ -1,4 +1,5 @@
 <template>
+  <MenuSide />
   <div class="page-content p-5 bg-light" id="content">
     <div class="py-4">
       <header class="pb-3 mb-4 border-bottom">
@@ -26,7 +27,7 @@
           >
         </a>
       </header>
-      <div class="container">ACCOUNT</div>
+      <button class="btn btn-danger" @click="disconnect">Deconnexion</button>
       <footer class="pt-3 mt-4 fw-bold text-light border-top">
         © MDT-Systeme 2022
       </footer>
@@ -34,21 +35,39 @@
   </div>
 </template>
 <script>
+import MenuSide from "@/components/MenuSide.vue";
 export default {
   name: "AccountView",
+  components: {
+    MenuSide,
+  },
   methods: {
     async checkgrade() {
       const checkgradeResponse = await fetch("/checkGrade", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Autorization: "Bearer " + localStorage.getItem("token"),
+          Authorisation: "Bearer " + localStorage.getItem("token"),
         },
       });
       const data2 = await checkgradeResponse.json();
       console.log(data2);
       if (data2.error == true) {
         this.$router.push("/signin");
+      }
+    },
+
+    async disconnect() {
+      const disconnectResponse = await fetch("/disconnect", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorisation: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+      const disconnectStatus = await disconnectResponse.json();
+      if (disconnectStatus.error == false) {
+        this.$router.push("/");
       }
     },
   },

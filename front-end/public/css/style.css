@@ -108,6 +108,39 @@ body {
 .bi-person-add {
   color: white;
 }
+
+.menu_container_open {
+  right: -130px;
+  top: 18px;
+  display: none;
+}
+.menu_container_close {
+  right: -130px;
+  top: 18px;
+  display: none;
+}
+.listOpen_option {
+  min-width: 130px;
+  height: auto;
+  text-align: center;
+}
+
+.listOpen_option div:hover {
+  cursor: pointer;
+  color: green;
+}
+
+.listclasse_option {
+  min-width: 130px;
+  height: auto;
+  text-align: center;
+}
+
+.listclasse_option div:hover {
+  cursor: pointer;
+  color: green;
+}
+
 @media (max-width: 768px) {
   #sidebar .active {
     margin-left: -17rem;

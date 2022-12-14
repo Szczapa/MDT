@@ -1,4 +1,5 @@
 <template>
+  <MenuSide />
   <div class="page-content p-5 bg-light" id="content">
     <div class="py-4">
       <header class="pb-3 mb-4 border-bottom">
@@ -33,11 +34,13 @@
 <script>
 // @ is an alias to /src
 import RegisterForm from "@/components/RegisterForm.vue";
+import MenuSide from "@/components/MenuSide.vue";
 
 export default {
   name: "RegisterView",
   components: {
     RegisterForm,
+    MenuSide,
   },
 };
 </script>

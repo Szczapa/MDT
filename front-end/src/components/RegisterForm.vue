@@ -101,7 +101,6 @@
             Valider l'inscription
           </button>
         </div>
-        <div>{{ userToAdd }}</div>
       </div>
     </div>
   </main>
@@ -158,7 +157,7 @@ export default {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Autorization: "Bearer " + localStorage.getItem("token"),
+          Authorisation: "Bearer " + localStorage.getItem("token"),
         },
         body: JSON.stringify(this.userToAdd),
       });
@@ -177,7 +176,7 @@ export default {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Autorization: "Bearer " + localStorage.getItem("token"),
+          Authorisation: "Bearer " + localStorage.getItem("token"),
         },
       });
       const data2 = await checkgradeResponse.json();

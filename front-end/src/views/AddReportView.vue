@@ -1,4 +1,5 @@
 <template>
+  <MenuSide />
   <div class="page-content p-5 bg-light vh-100" id="content">
     <div class="py-4">
       <header class="pb-3 mb-4 border-bottom">
@@ -36,11 +37,12 @@
 <script>
 // @ is an alias to /src
 import ReportForm from "@/components/ReportSystem.vue";
-
+import MenuSide from "@/components/MenuSide.vue";
 export default {
   name: "ReportView",
   components: {
     ReportForm,
+    MenuSide,
   },
 };
 </script>

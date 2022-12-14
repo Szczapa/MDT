@@ -75,7 +75,7 @@ export default {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Autorization: "Bearer " + localStorage.getItem("token"),
+          Authorisation: "Bearer " + localStorage.getItem("token"),
         },
       });
       const result = await response.json();
@@ -93,7 +93,7 @@ export default {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Autorization: "Bearer " + localStorage.getItem("token"),
+          Authorisation: "Bearer " + localStorage.getItem("token"),
         },
       });
       const result = await response.json();

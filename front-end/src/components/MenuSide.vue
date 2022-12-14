@@ -19,8 +19,8 @@
           </div>
           <div class="media-body media_padding">
             <div v-for="user in userInfo" :key="user.id">
-              <h4 class="m-0">{{ user.firstName }}</h4>
-              <p class="font-weight-light text-muted mb-0">Capitaine</p>
+              <h4 class="m-0">{{ user.firstname }}</h4>
+              <p class="font-weight-light text-muted mb-0">{{ user.grade }}</p>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@ export default {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorisation: "Bearer " + localStorage.getItem("token"),
         },
       });
 
@@ -89,15 +89,16 @@ export default {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Bearer " + localStorage.getItem("token"),
+          Authorisation: "Bearer " + localStorage.getItem("token"),
         },
       });
       const userResult = await takeUSer.json();
-
+      console.log(userResult);
       if (userResult.error === true) {
         this.userInfo = [];
       } else {
         this.userInfo = userResult;
+        console.log(userResult);
       }
     },
   },

@@ -1,4 +1,5 @@
 <template>
+  <MenuSide />
   <div class="page-content p-5 bg-light" id="content">
     <div class="py-4">
       <main class="form-signin bg-light rounded-3">
@@ -44,8 +45,6 @@
           </button>
         </div>
       </main>
-      <div>{{ logUser.userName }}</div>
-      <div>{{ logUser.password }}</div>
       <footer class="pt-3 mt-4 fw-bold text-light border-top">
         © MDT-Systeme 2022
       </footer>
@@ -54,8 +53,12 @@
 </template>
 
 <script>
+import MenuSide from "@/components/MenuSide.vue";
 export default {
   name: "loginSystem",
+  components: {
+    MenuSide,
+  },
   data() {
     return {
       error: null,
